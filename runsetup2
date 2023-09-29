@@ -1,0 +1,33 @@
+#!/usr/bin/env expect
+
+source common.tcl
+set timeout -1
+
+spawn pdp11
+
+simh "set cpu 11/70"
+simh "set cpu 1M"
+simh "set cpu idle"
+simh "attach tm0 pwb_usr.tap"
+simh "set rp0 rp06"
+simh "attach rp0 rp0"
+simh "dep system sr 173030"
+simh "boot rp0"
+
+respond "#" "00"
+respond "=" "unixhptm\r"
+
+unix "cd /"
+unix "mkfs /dev/rrp1 35000"
+unix "labelit /dev/rrp1 usr p0002"
+unix "mount /dev/rp1 /usr"
+unix "cd /usr"
+unix "cpio -idm </dev/rmt4"
+
+unix "sync"
+unix "sync"
+unix "sync"
+
+respond "# " $break
+simh "quit"
+expect eof

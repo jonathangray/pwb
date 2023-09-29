@@ -1,0 +1,29 @@
+#!/usr/bin/env expect
+
+source common.tcl
+
+spawn pdp11
+
+simh "set cpu 11/70"
+simh "set cpu 1M"
+simh "set cpu idle"
+simh "attach tm0 pwb_root.tap"
+simh "set rp0 rp06"
+simh "attach rp0 rp0"
+
+respond "Overwrite last track? \\\[N\\\]" "\r"
+
+simh "dep system sr 173030"
+simh "boot tm0"
+
+respond "RP03 at address 176710?: " "n\r"
+respond "RP04, RP05, or RP06 at address 176700?: " "y\r"
+respond "Drive number (0-7)?: " "0\r"
+respond "Ready?: " "y\r"
+respond "TU10/TM11 at address 172520?: " "y\r"
+respond "Drive number (0-7)?: " "0\r"
+respond "Ready?: " "y\r"
+respond "What is the pack volume label? (e.g. p0001): " "\r"
+
+simh "quit"
+expect eof

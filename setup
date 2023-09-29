@@ -1,0 +1,41 @@
+#!/bin/sh
+#
+# setup a pwb system from tape.
+# note: this will erase your previous system!
+#
+
+if [ -e rp0 -o -e rp1 -o -e rp2 ] ; then 
+    if [ $# -ne 1 -o "x$1" != "xy" ] ; then
+        echo "This will wipe your current pwb system!  Run with 'y' on command"
+        echo "line to confirm!"
+        echo
+        echo "usage:  $0 y"
+        exit 1
+    fi
+    rm -f rp[012]
+fi
+
+if [ ! -f pwb_root.tap ] ; then
+    gzip -dc pwb_root.tap.gz > pwb_root.tap
+fi
+
+if [ ! -f pwb_usr.tap ] ; then
+    gzip -dc pwb_usr.tap.gz > pwb_usr.tap
+fi
+
+if [ ! -f pwb_sys.tap ] ; then
+    gzip -dc pwb_sys.tap.gz > pwb_sys.tap
+fi
+
+if [ ! -f pwb_ecc.tap ] ; then
+    gzip -dc pwb_ecc.tap.gz > pwb_ecc.tap
+fi
+
+if [ ! -f pwb_type.tap ] ; then
+    gzip -dc pwb_type.tap.gz > pwb_type.tap
+fi
+
+./runsetup
+./runsetup2
+./runsetup3
+./runsetup4
