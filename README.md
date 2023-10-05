@@ -58,4 +58,8 @@ http://squoze.net/UNIX/sysIII_pdp11/Installation
 scans of documentation for PWB/UNIX 1.0 can be found at
 https://bitsavers.org/pdf/att/unix/PWB_UNIX/
 
-Files in doc directory recreated from sources in the tapes.
+Files in doc directory created from PWB troff output.
+Files in man directory created with groff in compatibility
+mode with macros from PWB.  spline(1) and tbl(1) not preprocessed
+with eqn and tbl due to errors.  Request table in roff(1) does
+not display correctly.
